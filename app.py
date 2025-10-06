@@ -12,14 +12,20 @@ UPLOAD_FOLDER = 'static/uploads'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'mp4', 'mov'}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-
 # ## MySQL Configuration ##
 app.config['MYSQL_HOST'] = os.environ.get('MYSQL_HOST')
 app.config['MYSQL_USER'] = os.environ.get('MYSQL_USER')
 app.config['MYSQL_PASSWORD'] = os.environ.get('MYSQL_PASSWORD')
 app.config['MYSQL_DB'] = os.environ.get('MYSQL_DB')
-# Required for Aiven
+# --- START FIX ---
+# These two lines are required for secure connections on Render/Aiven
 app.config['MYSQL_SSL_MODE'] = 'REQUIRED'
+app.config['MYSQL_SSL_CA'] = '/etc/ssl/certs/ca-certificates.crt'
+
+# Set the secret key from an environment variable
+app.secret_key = os.environ.get('SECRET_KEY')
+# --- END FIX ---
+
 
 mysql = MySQL(app)
 

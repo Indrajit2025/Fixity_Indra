@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authority Registration - Fixity</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* --- Universal Styles & Font Import --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* --- Body Styling with Gradient Background --- */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #333;
+            padding: 2rem 0;
+        }
+
+        /* --- Form Container Styling --- */
+        .form-container {
+            background: #ffffff;
+            padding: 3rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 800px;
+        }
+
+        /* --- Form Heading --- */
+        h2 {
+            text-align: center;
+            font-weight: 700;
+            font-size: 2.2rem;
+            margin-bottom: 2.5rem;
+            color: #2c3e50;
+            position: relative;
+        }
+        
+        h2::after {
+            content: '';
+            width: 60px;
+            height: 4px;
+            background-color: #3498db;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: -10px;
+            border-radius: 2px;
+        }
+
+        /* --- Two-Column Layout --- */
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        /* --- Input Grouping --- */
+        .input-group {
+            position: relative;
+            margin-bottom: 1.75rem;
+        }
+        
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        /* --- Input Fields & Select Styling --- */
+        .input-field {
+            width: 100%;
+            padding: 0.9rem 1rem;
+            background: #f8f9fa;
+            border: 2px solid #dfe6e9;
+            border-radius: 8px;
+            color: #333;
+            font-size: 1rem;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .input-field:disabled {
+            background-color: #e9ecef;
+            cursor: not-allowed;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: #3498db;
+            background: #fff;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        /* --- Label Styling --- */
+        label {
+            display: block;
+            margin-bottom: 0.6rem;
+            font-weight: 500;
+            color: #636e72;
+        }
+
+        /* --- Pincode Section Specifics --- */
+        #pincode-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+        
+        .pincode-input-group {
+            display: flex;
+            align-items: center;
+        }
+        
+        .pincode-input-group input {
+            border-radius: 8px 0 0 8px;
+        }
+
+        .remove-pincode-btn {
+            padding: 0.9rem;
+            border: 2px solid #dfe6e9;
+            border-left: none;
+            background-color: #f8f9fa;
+            color: #e74c3c;
+            cursor: pointer;
+            border-radius: 0 8px 8px 0;
+            transition: background-color 0.3s;
+        }
+
+        .remove-pincode-btn:hover {
+            background-color: #e74c3c;
+            color: #fff;
+        }
+
+        #add-pincode-btn {
+            background: none;
+            border: 2px dashed #3498db;
+            color: #3498db;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        #add-pincode-btn:hover {
+            background-color: #3498db;
+            color: #fff;
+        }
+
+
+        /* --- Submit Button --- */
+        .submit-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            border: none;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+            margin-top: 1rem;
+        }
+
+        .submit-btn:hover {
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+            transform: translateY(-2px);
+        }
+
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <form method="post" onsubmit="combinePincodes()">
+            <h2>Authority Onboarding</h2>
+
+            <div class="form-row">
+                <div class="input-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" class="input-field" placeholder="Choose a unique username" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="email">Official Email</label>
+                    <input type="email" id="email" name="email" class="input-field" placeholder="Enter your ...@gov.in email" required pattern=".+@gov\.in$" title="Please use a valid .gov.in email address.">
+                </div>
+            </div>
+
+            <div class="form-row">
+                 <div class="input-group">
+                    <label for="state">State (Optional)</label>
+                    <select id="state" name="state" class="input-field">
+                        <option value="" selected>Select State</option>
+                        <option value="Odisha">Odisha</option>
+                        <option value="West Bengal">West Bengal</option>
+                        </select>
+                </div>
+                <div class="input-group">
+                    <label for="district">District</label>
+                    <select id="district" name="district" class="input-field" disabled>
+                        <option value="" selected>Select State First</option>
+                    </select>
+                </div>
+            </div>
+           
+            <div class="input-group full-width">
+                <label for="block">Block / Municipality</label>
+                <select id="block" name="block" class="input-field" disabled>
+                    <option value="" selected>Select District First</option>
+                </select>
+            </div>
+
+            <div class="input-group full-width">
+                <label for="pincodes">Serviceable Pincodes</label>
+                <div id="pincode-container">
+                    <div class="pincode-input-group">
+                        <input type="text" class="input-field pincode-input" placeholder="Pincode 1" pattern="\d{6}" title="Pincode must be 6 digits.">
+                    </div>
+                </div>
+                <button type="button" id="add-pincode-btn"><i class="fas fa-plus"></i> Add More Pincodes</button>
+                <input type="hidden" id="pincodes" name="pincodes">
+            </div>
+
+            <div class="input-group full-width">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" class="input-field" placeholder="Create a strong password" required>
+            </div>
+
+            <input type="submit" value="Register Authority" class="submit-btn">
+        </form>
+    </div>
+
+    <script>
+        // Data for cascading dropdowns
+        const locationData = {
+            "Odisha": {
+                "Angul": ["Angul", "Athmallik", "Banarpal", "Chhendipada", "Kaniha", "Kishorenagar", "Pallahara", "Talcher"],
+                "Balangir": ["Agalpur", "Balangir", "Bangomunda", "Belpara", "Deogaon", "Gudvella", "Khaprakhol", "Loisingha", "Muriibahal", "Patnagarh", "Puintala", "Saintala", "Titlagarh", "Tureikela"],
+                "Balasore": ["Bahanaga", "Balasore Sadar", "Baliapal", "Basta", "Bhograi", "Jaleswar", "Khaira", "Oupada", "Remuna", "Simulia", "Soro"],
+                "Bargarh": ["Ambabhona", "Attabira", "Bargarh", "Barpali", "Bhatli", "Bheden", "Bijepur", "Gaisilet", "Jharbandh", "Paikmal", "Padmapur", "Sohela"],
+                "Bhadrak": ["Bant", "Basudevpur", "Bhadrak", "Bhandaripokhari", "Chandabali", "Dhamnagar", "Tihidi"],
+                "Boudh": ["Boudh", "Harbhanga", "Kantamal"],
+                "Cuttack": ["Athagad", "Badamba", "Banki", "Barang", "Cuttack Sadar", "Dampara", "Kantapada", "Mahanga", "Narsinghpur", "Niali", "Nischintakoili", "Salepur", "Tangi-Chowdwar", "Tigiria"],
+                "Deogarh": ["Barkote", "Reamal", "Tileibani"],
+                "Dhenkanal": ["Dhenkanal Sadar", "Gandia", "Hindol", "Kamakhyanagar", "Kankadahad", "Odapada", "Parjang", " Bhuban"],
+                "Gajapati": ["Gumma", "Kashinagar", "Mohana", "Nuagada", "Paralakhemundi", "R.Udayagiri", "Rayagada"],
+                "Ganjam": ["Aska", "Beguniapada", "Bellaguntha", "Bhanjanagar", "Brahmapur", "Buguda", "Chhatrapur", "Chikiti", "Dharakote", "Digapahandi", "Ganjam", "Hinjilicut", "Jagannathprasad", "Khallikote", "Kukudakhandi", "Patrapur", "Polasara", "Purusottampur", "Rangeilunda", "Sanakhemundi", "Seragad", "Surada"],
+                "Jagatsinghpur": ["Balikuda", "Biridi", "Erasama", "Jagatsinghpur", "Kujang", "Naugaon", "Raghunathpur", "Tirtol"],
+                "Jajpur": ["Bari", "Binjharpur", "Danagadi", "Dasarathapur", "Dharmasala", "Jajpur", "Korai", "Rasulpur", "Sukinda", "Badachana"],
+                "Jharsuguda": ["Jharsuguda", "Kolabira", "Kirmira", "Laikera", "Lakhanpur"],
+                "Kalahandi": ["Bhawanipatna", "Dharamgarh", "Golamunda", "Jaipatna", "Junagarh", "Kalampur", "Karlamunda", "Kesinga", "Koksara", "Lanjigarh", "Madanpur-Rampur", "Narla", "Thuamul-Rampur"],
+                "Kandhamal": ["Baliguda", "Chakapad", "Daringbadi", "G. Udayagiri", "K. Nuagaon", "Khajuripada", "Kotagarh", "Phiringia", "Phulbani", "Raikia", "Tikabali", "Tumudibandha"],
+                "Kendrapara": ["Aul", "Derabish", "Garadpur", "Kendrapara", "Mahakalapada", "Marshaghai", "Pattamundai", "Rajanagar", "Rajkanika"],
+                "Keonjhar": ["Anandapur", "Bansapal", "Champua", "Ghasipura", "Ghatgaon", "Harichandanpur", "Hatadihi", "Joda", "Jhumpura", "Keonjhar", "Patna", "Saharpada", "Telkoi"],
+                "Khordha": ["Balipatna", "Balianta", "Banapur", "Begunia", "Bhubaneswar", "Bolagarh", "Chilika", "Jatani", "Khordha", "Tangi"],
+                "Koraput": ["Bandhugaon", "Boipariguda", "Borigumma", "Dasamantapur", "Jeypore", "Koraput", "Kotpad", "Kundura", "Lamtaput", "Laxmipur", "Machkund", "Nandapur", "Narayanpatna", "Pottangi", "Semiliguda"],
+                "Malkangiri": ["Kalimela", "Khairaput", "Korukunda", "Kudumulugumma", "Malkangiri", "Mathili", "Podia"],
+                "Mayurbhanj": ["Bahalda", "Bangriposi", "Baripada", "Barasahi", "Betnoti", "Bijatala", "Gopabandhunagar", "Jamda", "Jashipur", "Karanjia", "Khunta", "Kusumi", "Kuliana", "Morada", "Rairangpur", "Raruan", "Rasagobindapur", "Sankarakunta", "Sarat", "Suliapada", "Thakurmunda", "Tiring"],
+                "Nabarangpur": ["Chandahandi", "Dabugam", "Jharigam", "Kosagumuda", "Nabarangpur", "Nandahandi", "Papadahandi", "Raighar", "Tentulikhunti", "Umerkote"],
+                "Nayagarh": ["Bhapur", "Daspalla", "Gania", "Khandapada", "Nayagarh", "Nuagaon", "Odagaon", "Ranpur"],
+                "Nuapada": ["Boden", "Khariar", "Komna", "Nuapada", "Sinapali"],
+                "Puri": ["Astaranga", "Brahmagiri", "Delanga", "Gop", "Kakatpur", "Kanas", "Krushnaprasad", "Nimapada", "Pipili", "Puri Sadar", "Satyabadi"],
+                "Rayagada": ["Bisham Cuttack", "Chandrapur", "Gudari", "Gunupur", "Kalyansinghpur", "Kashipur", "Kolnara", "Muniguda", "Padmapur", "Ramanguda", "Rayagada"],
+                "Sambalpur": ["Bamra", "Dhankauda", "Jamankira", "Jujomura", "Kuchinda", "Maneswar", "Naktideul", "Rairakhol", "Rengali"],
+                "Subarnapur": ["Binika", "Birmaharajpur", "Dunguripali", "Rampur", "Sonepur", "Tarbha", "Ullunda"],
+                "Sundargarh": ["Balisanakara", "Bargaon", "Bisra", "Bonaigarh", "Gurundia", "Hemgir", "Koida", "Kutra", "Lahunipara", "Lathikata", "Lephripara", "Nuagaon", "Rajgangpur", "Sabdega", "Subdega", "Sundargarh", "Tangarpali"]
+            },
+            "West Bengal": {
+                "Alipurduar": ["Alipurduar I", "Alipurduar II", "Falakata", "Kalchini", "Kumargram", "Madarihat-Birpara"],
+                "Bankura": ["Bankura I", "Bankura II", "Barjora", "Chhatna", "Gangajalghati", "Hirbandh", "Indpur", "Indus", "Joypur", "Khatra", "Kotulpur", "Mejia", "Onda", "Patrasayer", "Raipur", "Ranibandh", "Saltora", "Sarenga", "Simlapal", "Sonamukhi", "Taldangra", "Vishnupur"],
+                "Birbhum": ["Bolpur Sriniketan", "Dubrajpur", "Illambazar", "Khoyrasol", "Labpur", "Mayureswar I", "Mayureswar II", "Mohammad Bazar", "Murarai I", "Murarai II", "Nalhati I", "Nalhati II", "Nanoor", "Rajnagar", "Rampurhat I", "Rampurhat II", "Sainthia", "Suri I", "Suri II"],
+                "Cooch Behar": ["Cooch Behar I", "Cooch Behar II", "Dinhata I", "Dinhata II", "Haldibari", "Mathabhanga I", "Mathabhanga II", "Mekliganj", "Sitai", "Sitalkuchi", "Tufanganj I", "Tufanganj II"],
+                "Dakshin Dinajpur": ["Balurghat", "Bansihari", "Gangarampur", "Harirampur", "Hili", "Kumarganj", "Kushmandi", "Tapan"],
+                "Darjeeling": ["Darjeeling Pulbazar", "Jorebunglow Sukiapokhri", "Kurseong", "Mirik", "Rangli Rangliot", "Matigara", "Naxalbari", "Phansidewa", "Khoribari"],
+                "Hooghly": ["Arambagh", "Balagarh", "Chanditala I", "Chanditala II", "Chinsurah Mogra", "Dhaniakhali", "Goghat I", "Goghat II", "Haripal", "Jangipara", "Khanakul I", "Khanakul II", "Pandua", "Polba Dadpur", "Pursurah", "Serampore Uttarpara", "Singur", "Tarakeswar"],
+                "Howrah": ["Amta I", "Amta II", "Bagnan I", "Bagnan II", "Bally Jagachha", "Domjur", "Jagatballavpur", "Panchla", "Sankrail", "Shyampur I", "Shyampur II", "Udaynarayanpur", "Uluberia I", "Uluberia II"],
+                "Jalpaiguri": ["Dhupguri", "Jalpaiguri", "Mal", "Matiali", "Nagrakata", "Rajganj"],
+                "Jhargram": ["Binpur I", "Binpur II", "Gopiballavpur I", "Gopiballavpur II", "Jamboni", "Jhargram", "Nayagram", "Sankrail"],
+                "Kalimpong": ["Gorubathan", "Kalimpong I", "Lava"],
+                "Kolkata": ["Kolkata"],
+                "Malda": ["Bamangola", "Chanchal I", "Chanchal II", "English Bazar", "Gazole", "Habibpur", "Harishchandrapur I", "Harishchandrapur II", "Kaliachak I", "Kaliachak II", "Kaliachak III", "Manikchak", "Old Malda", "Ratua I", "Ratua II"],
+                "Murshidabad": ["Beldanga I", "Beldanga II", "Berhampore", "Bhagawangola I", "Bhagawangola II", "Bharatpur I", "Bharatpur II", "Burwan", "Domkal", "Farakka", "Hariharpara", "Jalangi", "Kandi", "Khargram", "Lalgola", "Murshidabad Jiaganj", "Nawda", "Raghunathganj I", "Raghunathganj II", "Raninagar I", "Raninagar II", "Sagardighi", "Samserganj", "Suti I", "Suti II"],
+                "Nadia": ["Chakdaha", "Chapra", "Haringhata", "Hanskhali", "Kaliganj", "Karimpur I", "Karimpur II", "Krishnaganj", "Krishnanagar I", "Krishnanagar II", "Nabadwip", "Nakashipara", "Ranaghat I", "Ranaghat II", "Santipur", "Tehatta I", "Tehatta II"],
+                "North 24 Parganas": ["Amdanga", "Baduria", "Bagda", "Barasat I", "Barasat II", "Barrackpore I", "Barrackpore II", "Basirhat I", "Basirhat II", "Bongaon", "Deganga", "Gaighata", "Habra I", "Habra II", "Haroa", "Hasnabad", "Hingalganj", "Minakhan", "Rajarhat", "Sandeshkhali I", "Sandeshkhali II", "Swarupnagar"],
+                "Paschim Bardhaman": ["Asansol Municipal Corporation", "Durgapur Municipal Corporation", "Andal", "Barabani", "Durgapur Faridpur", "Jamuria", "Kanksa", "Pandabeswar", "Raniganj", "Salampur"],
+                "Paschim Medinipur": ["Binpur I", "Binpur II", "Chandrakona I", "Chandrakona II", "Dantan I", "Dantan II", "Daspur I", "Daspur II", "Debra", "Garbeta I", "Garbeta II", "Garbeta III", "Ghatal", "Gopiballavpur I", "Gopiballavpur II", "Jamboni", "Jhargram", "Keshpur", "Keshiary", "Kharagpur I", "Kharagpur II", "Midnapore Sadar", "Mohanpur", "Narayangarh", "Nayagram", "Pingla", "Sabang", "Salboni", "Sankrail"],
+                "Purba Bardhaman": ["Ausgram I", "Ausgram II", "Bhatar", "Burdwan I", "Burdwan II", "Galsi I", "Galsi II", "Jamalpur", "Kalna I", "Kalna II", "Katwa I", "Katwa II", "Khandaghosh", "Ketugram I", "Ketugram II", "Manteswar", "Memari I", "Memari II", "Mongolkote", "Purbasthali I", "Purbasthali II", "Raina I", "Raina II"],
+                "Purba Medinipur": ["Bhagawanpur I", "Bhagawanpur II", "Chandipur", "Contai I", "Contai III", "Egra I", "Egra II", "Haldia", "Khejuri I", "Khejuri II", "Mahishadal", "Moyna", "Nandakumar", "Nandigram I", "Nandigram II", "Panskura", "Patashpur I", "Patashpur II", "Ramnagar I", "Ramnagar II", "Sahid Matangini", "Sutahata", "Tamluk"],
+                "Purulia": ["Arsha", "Bagmundi", "Balarampur", "Barabazar", "Bundwan", "Hura", "Jhalda I", "Jhalda II", "Joypur", "Kashipur", "Manbazar I", "Manbazar II", "Neturia", "Para", "Puncha", "Purulia I", "Purulia II", "Raghunathpur I", "Raghunathpur II", "Santuri"],
+                "South 24 Parganas": ["Baruipur", "Basanti", "Bhangar I", "Bhangar II", "Bishnupur I", "Bishnupur II", "Budge Budge I", "Budge Budge II", "Canning I", "Canning II", "Diamond Harbour I", "Diamond Harbour II", "Falta", "Gosaba", "Jaynagar I", "Jaynagar II", "Kakdwip", "Kultali", "Magrahat I", "Magrahat II", "Mandirbazar", "Mathurapur I", "Mathurapur II", "Namkhana", "Patharpratima", "Sagar", "Sonarpur", "Thakurpukur Maheshtala"],
+                "Uttar Dinajpur": ["Chopra", "Goalpokhar I", "Goalpokhar II", "Hemtabad", "Islampur", "Itahar", "Kaliaganj", "Karandighi", "Raiganj"]
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const stateSelect = document.getElementById('state');
+            const districtSelect = document.getElementById('district');
+            const blockSelect = document.getElementById('block');
+
+            stateSelect.addEventListener('change', function() {
+                const selectedState = this.value;
+                
+                // Clear and disable district and block selects
+                districtSelect.innerHTML = '<option value="">Select District</option>';
+                blockSelect.innerHTML = '<option value="">Select District First</option>';
+                districtSelect.disabled = true;
+                blockSelect.disabled = true;
+
+                if (selectedState && locationData[selectedState]) {
+                    const districts = Object.keys(locationData[selectedState]).sort();
+                    districts.forEach(district => {
+                        const option = document.createElement('option');
+                        option.value = district;
+                        option.textContent = district;
+                        districtSelect.appendChild(option);
+                    });
+                    districtSelect.disabled = false;
+                }
+            });
+
+            districtSelect.addEventListener('change', function() {
+                const selectedState = stateSelect.value;
+                const selectedDistrict = this.value;
+
+                // Clear and disable block select
+                blockSelect.innerHTML = '<option value="">Select Block</option>';
+                blockSelect.disabled = true;
+
+                if (selectedState && selectedDistrict && locationData[selectedState][selectedDistrict]) {
+                    const blocks = locationData[selectedState][selectedDistrict].sort();
+                    blocks.forEach(block => {
+                        const option = document.createElement('option');
+                        option.value = block;
+                        option.textContent = block;
+                        blockSelect.appendChild(option);
+                    });
+                    blockSelect.disabled = false;
+                }
+            });
+
+            // Pincode functionality
+            const pincodeContainer = document.getElementById('pincode-container');
+            const addPincodeBtn = document.getElementById('add-pincode-btn');
+
+            const createPincodeInput = () => {
+                const newPincodeGroup = document.createElement('div');
+                newPincodeGroup.className = 'pincode-input-group';
+
+                const newPincodeInput = document.createElement('input');
+                newPincodeInput.type = 'text';
+                newPincodeInput.className = 'input-field pincode-input';
+                newPincodeInput.placeholder = `Pincode ${pincodeContainer.children.length + 1}`;
+                newPincodeInput.pattern = '\\d{6}';
+                newPincodeInput.title = 'Pincode must be 6 digits.';
+
+                const removeBtn = document.createElement('button');
+                removeBtn.type = 'button';
+                removeBtn.className = 'remove-pincode-btn';
+                removeBtn.innerHTML = '<i class="fas fa-trash-alt"></i>';
+                
+                removeBtn.addEventListener('click', function() {
+                    newPincodeGroup.remove();
+                    // Re-number placeholders
+                    const inputs = pincodeContainer.querySelectorAll('.pincode-input');
+                    inputs.forEach((input, index) => {
+                        input.placeholder = `Pincode ${index + 1}`;
+                    });
+                });
+
+                newPincodeGroup.appendChild(newPincodeInput);
+                newPincodeGroup.appendChild(removeBtn);
+                pincodeContainer.appendChild(newPincodeGroup);
+            };
+            addPincodeBtn.addEventListener('click', createPincodeInput);
+        });
+
+        // Function to gather all pincodes into the hidden input before form submission
+        function combinePincodes() {
+            const pincodeInputs = document.querySelectorAll('.pincode-input');
+            const pincodesArray = [];
+            pincodeInputs.forEach(input => {
+                if (input.value.trim() !== '') {
+                    pincodesArray.push(input.value.trim());
+                }
+            });
+            document.getElementById('pincodes').value = pincodesArray.join(',');
+        }
+    </script>
+</body>
+</html>

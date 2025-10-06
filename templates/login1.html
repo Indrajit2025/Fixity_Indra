@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authority Login</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- Universal Styles & Font Import --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* --- Body Styling with Gradient Background --- */
+        body {
+            font-family: 'Poppins', sans-serif;
+            /* A beautiful, vibrant "aurora" gradient */
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #ffffff;
+        }
+
+        /* --- Glassmorphism Form Container --- */
+        .form-container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2.5rem 3rem;
+            border-radius: 20px;
+            /* Frosted glass effect */
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px); /* For Safari */
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            width: 100%;
+            max-width: 480px;
+        }
+
+        /* --- Form Heading --- */
+        h2 {
+            text-align: center;
+            font-weight: 700;
+            font-size: 2.2rem;
+            margin-bottom: 2.5rem;
+            text-shadow: 0 3px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        /* --- Input Grouping --- */
+        .input-group {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+
+        /* --- Input Fields & Select Styling --- */
+        .input-field {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            color: #fff;
+            font-size: 1rem;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .input-field::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .input-field:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.25);
+            border-color: #89f7fe;
+            box-shadow: 0 0 15px rgba(137, 247, 254, 0.3);
+        }
+
+        .input-field:disabled {
+            background-color: rgba(0, 0, 0, 0.2);
+            cursor: not-allowed;
+        }
+        
+        .input-field option {
+            background: #2c5364;
+            color: #fff;
+        }
+
+        /* --- Label Styling --- */
+        label {
+            display: block;
+            margin-bottom: 0.75rem;
+            font-weight: 400;
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* --- Submit Button --- */
+        .submit-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #ff512f 0%, #dd2476 100%);
+            border: none;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(221, 36, 118, 0.4);
+        }
+
+        /* --- Hover & Active Effects for Button --- */
+        .submit-btn:hover {
+            box-shadow: 0 6px 25px rgba(221, 36, 118, 0.6);
+            transform: translateY(-3px);
+        }
+        
+        .submit-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 3px 15px rgba(221, 36, 118, 0.5);
+        }
+
+        /* Flashed messages */
+        .alert {
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 500;
+        }
+        .alert-danger {
+            background-color: rgba(220, 53, 69, 0.5);
+            border: 1px solid rgba(220, 53, 69, 0.8);
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <form method="post">
+            <h2>Authority Login</h2>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+                {% for category, message in messages %}
+                  <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+              {% endif %}
+            {% endwith %}
+            <div class="input-group">
+                <label for="username">Username</label>
+                <input type="text" name="username" class="input-field" placeholder="Enter your username" required>
+            </div>
+            <div class="input-group">
+                <label for="password">Password</label>
+                <input type="password" name="password" class="input-field" placeholder="Enter your password" required>
+            </div>
+            
+            <div class="input-group">
+                <label for="state">State</label>
+                <select id="state" name="state" class="input-field" required>
+                    <option value="" selected disabled>Select State</option>
+                    <option value="Odisha">Odisha</option>
+                    <option value="West Bengal">West Bengal</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="district">District</label>
+                <select id="district" name="district" class="input-field" disabled required>
+                    <option value="" selected>Select State First</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="block">Block / Municipality</label>
+                <select id="block" name="block" class="input-field" disabled required>
+                    <option value="" selected>Select District First</option>
+                </select>
+            </div>
+
+            <input type="submit" value="Login" class="submit-btn">
+        </form>
+    </div>
+
+    <script>
+        // Data for cascading dropdowns
+        const locationData = {
+            "Odisha": {
+                "Angul": ["Angul", "Athmallik", "Banarpal", "Chhendipada", "Kaniha", "Kishorenagar", "Pallahara", "Talcher"],
+                "Balangir": ["Agalpur", "Balangir", "Bangomunda", "Belpara", "Deogaon", "Gudvella", "Khaprakhol", "Loisingha", "Muriibahal", "Patnagarh", "Puintala", "Saintala", "Titlagarh", "Tureikela"],
+                "Balasore": ["Bahanaga", "Balasore Sadar", "Baliapal", "Basta", "Bhograi", "Jaleswar", "Khaira", "Oupada", "Remuna", "Simulia", "Soro"],
+                "Bargarh": ["Ambabhona", "Attabira", "Bargarh", "Barpali", "Bhatli", "Bheden", "Bijepur", "Gaisilet", "Jharbandh", "Paikmal", "Padmapur", "Sohela"],
+                "Bhadrak": ["Bant", "Basudevpur", "Bhadrak", "Bhandaripokhari", "Chandabali", "Dhamnagar", "Tihidi"],
+                "Boudh": ["Boudh", "Harbhanga", "Kantamal"],
+                "Cuttack": ["Athagad", "Badamba", "Banki", "Barang", "Cuttack Sadar", "Dampara", "Kantapada", "Mahanga", "Narsinghpur", "Niali", "Nischintakoili", "Salepur", "Tangi-Chowdwar", "Tigiria"],
+                "Deogarh": ["Barkote", "Reamal", "Tileibani"],
+                "Dhenkanal": ["Dhenkanal Sadar", "Gandia", "Hindol", "Kamakhyanagar", "Kankadahad", "Odapada", "Parjang", " Bhuban"],
+                "Gajapati": ["Gumma", "Kashinagar", "Mohana", "Nuagada", "Paralakhemundi", "R.Udayagiri", "Rayagada"],
+                "Ganjam": ["Aska", "Beguniapada", "Bellaguntha", "Bhanjanagar", "Brahmapur", "Buguda", "Chhatrapur", "Chikiti", "Dharakote", "Digapahandi", "Ganjam", "Hinjilicut", "Jagannathprasad", "Khallikote", "Kukudakhandi", "Patrapur", "Polasara", "Purusottampur", "Rangeilunda", "Sanakhemundi", "Seragad", "Surada"],
+                "Jagatsinghpur": ["Balikuda", "Biridi", "Erasama", "Jagatsinghpur", "Kujang", "Naugaon", "Raghunathpur", "Tirtol"],
+                "Jajpur": ["Bari", "Binjharpur", "Danagadi", "Dasarathapur", "Dharmasala", "Jajpur", "Korai", "Rasulpur", "Sukinda", "Badachana"],
+                "Jharsuguda": ["Jharsuguda", "Kolabira", "Kirmira", "Laikera", "Lakhanpur"],
+                "Kalahandi": ["Bhawanipatna", "Dharamgarh", "Golamunda", "Jaipatna", "Junagarh", "Kalampur", "Karlamunda", "Kesinga", "Koksara", "Lanjigarh", "Madanpur-Rampur", "Narla", "Thuamul-Rampur"],
+                "Kandhamal": ["Baliguda", "Chakapad", "Daringbadi", "G. Udayagiri", "K. Nuagaon", "Khajuripada", "Kotagarh", "Phiringia", "Phulbani", "Raikia", "Tikabali", "Tumudibandha"],
+                "Kendrapara": ["Aul", "Derabish", "Garadpur", "Kendrapara", "Mahakalapada", "Marshaghai", "Pattamundai", "Rajanagar", "Rajkanika"],
+                "Keonjhar": ["Anandapur", "Bansapal", "Champua", "Ghasipura", "Ghatgaon", "Harichandanpur", "Hatadihi", "Joda", "Jhumpura", "Keonjhar", "Patna", "Saharpada", "Telkoi"],
+                "Khordha": ["Balipatna", "Balianta", "Banapur", "Begunia", "Bhubaneswar", "Bolagarh", "Chilika", "Jatani", "Khordha", "Tangi"],
+                "Koraput": ["Bandhugaon", "Boipariguda", "Borigumma", "Dasamantapur", "Jeypore", "Koraput", "Kotpad", "Kundura", "Lamtaput", "Laxmipur", "Machkund", "Nandapur", "Narayanpatna", "Pottangi", "Semiliguda"],
+                "Malkangiri": ["Kalimela", "Khairaput", "Korukunda", "Kudumulugumma", "Malkangiri", "Mathili", "Podia"],
+                "Mayurbhanj": ["Bahalda", "Bangriposi", "Baripada", "Barasahi", "Betnoti", "Bijatala", "Gopabandhunagar", "Jamda", "Jashipur", "Karanjia", "Khunta", "Kusumi", "Kuliana", "Morada", "Rairangpur", "Raruan", "Rasagobindapur", "Sankarakunta", "Sarat", "Suliapada", "Thakurmunda", "Tiring"],
+                "Nabarangpur": ["Chandahandi", "Dabugam", "Jharigam", "Kosagumuda", "Nabarangpur", "Nandahandi", "Papadahandi", "Raighar", "Tentulikhunti", "Umerkote"],
+                "Nayagarh": ["Bhapur", "Daspalla", "Gania", "Khandapada", "Nayagarh", "Nuagaon", "Odagaon", "Ranpur"],
+                "Nuapada": ["Boden", "Khariar", "Komna", "Nuapada", "Sinapali"],
+                "Puri": ["Astaranga", "Brahmagiri", "Delanga", "Gop", "Kakatpur", "Kanas", "Krushnaprasad", "Nimapada", "Pipili", "Puri Sadar", "Satyabadi"],
+                "Rayagada": ["Bisham Cuttack", "Chandrapur", "Gudari", "Gunupur", "Kalyansinghpur", "Kashipur", "Kolnara", "Muniguda", "Padmapur", "Ramanguda", "Rayagada"],
+                "Sambalpur": ["Bamra", "Dhankauda", "Jamankira", "Jujomura", "Kuchinda", "Maneswar", "Naktideul", "Rairakhol", "Rengali"],
+                "Subarnapur": ["Binika", "Birmaharajpur", "Dunguripali", "Rampur", "Sonepur", "Tarbha", "Ullunda"],
+                "Sundargarh": ["Balisanakara", "Bargaon", "Bisra", "Bonaigarh", "Gurundia", "Hemgir", "Koida", "Kutra", "Lahunipara", "Lathikata", "Lephripara", "Nuagaon", "Rajgangpur", "Sabdega", "Subdega", "Sundargarh", "Tangarpali"]
+            },
+            "West Bengal": {
+                "Alipurduar": ["Alipurduar I", "Alipurduar II", "Falakata", "Kalchini", "Kumargram", "Madarihat-Birpara"],
+                "Bankura": ["Bankura I", "Bankura II", "Barjora", "Chhatna", "Gangajalghati", "Hirbandh", "Indpur", "Indus", "Joypur", "Khatra", "Kotulpur", "Mejia", "Onda", "Patrasayer", "Raipur", "Ranibandh", "Saltora", "Sarenga", "Simlapal", "Sonamukhi", "Taldangra", "Vishnupur"],
+                "Birbhum": ["Bolpur Sriniketan", "Dubrajpur", "Illambazar", "Khoyrasol", "Labpur", "Mayureswar I", "Mayureswar II", "Mohammad Bazar", "Murarai I", "Murarai II", "Nalhati I", "Nalhati II", "Nanoor", "Rajnagar", "Rampurhat I", "Rampurhat II", "Sainthia", "Suri I", "Suri II"],
+                "Cooch Behar": ["Cooch Behar I", "Cooch Behar II", "Dinhata I", "Dinhata II", "Haldibari", "Mathabhanga I", "Mathabhanga II", "Mekliganj", "Sitai", "Sitalkuchi", "Tufanganj I", "Tufanganj II"],
+                "Dakshin Dinajpur": ["Balurghat", "Bansihari", "Gangarampur", "Harirampur", "Hili", "Kumarganj", "Kushmandi", "Tapan"],
+                "Darjeeling": ["Darjeeling Pulbazar", "Jorebunglow Sukiapokhri", "Kurseong", "Mirik", "Rangli Rangliot", "Matigara", "Naxalbari", "Phansidewa", "Khoribari"],
+                "Hooghly": ["Arambagh", "Balagarh", "Chanditala I", "Chanditala II", "Chinsurah Mogra", "Dhaniakhali", "Goghat I", "Goghat II", "Haripal", "Jangipara", "Khanakul I", "Khanakul II", "Pandua", "Polba Dadpur", "Pursurah", "Serampore Uttarpara", "Singur", "Tarakeswar"],
+                "Howrah": ["Amta I", "Amta II", "Bagnan I", "Bagnan II", "Bally Jagachha", "Domjur", "Jagatballavpur", "Panchla", "Sankrail", "Shyampur I", "Shyampur II", "Udaynarayanpur", "Uluberia I", "Uluberia II"],
+                "Jalpaiguri": ["Dhupguri", "Jalpaiguri", "Mal", "Matiali", "Nagrakata", "Rajganj"],
+                "Jhargram": ["Binpur I", "Binpur II", "Gopiballavpur I", "Gopiballavpur II", "Jamboni", "Jhargram", "Nayagram", "Sankrail"],
+                "Kalimpong": ["Gorubathan", "Kalimpong I", "Lava"],
+                "Kolkata": ["Kolkata"],
+                "Malda": ["Bamangola", "Chanchal I", "Chanchal II", "English Bazar", "Gazole", "Habibpur", "Harishchandrapur I", "Harishchandrapur II", "Kaliachak I", "Kaliachak II", "Kaliachak III", "Manikchak", "Old Malda", "Ratua I", "Ratua II"],
+                "Murshidabad": ["Beldanga I", "Beldanga II", "Berhampore", "Bhagawangola I", "Bhagawangola II", "Bharatpur I", "Bharatpur II", "Burwan", "Domkal", "Farakka", "Hariharpara", "Jalangi", "Kandi", "Khargram", "Lalgola", "Murshidabad Jiaganj", "Nawda", "Raghunathganj I", "Raghunathganj II", "Raninagar I", "Raninagar II", "Sagardighi", "Samserganj", "Suti I", "Suti II"],
+                "Nadia": ["Chakdaha", "Chapra", "Haringhata", "Hanskhali", "Kaliganj", "Karimpur I", "Karimpur II", "Krishnaganj", "Krishnanagar I", "Krishnanagar II", "Nabadwip", "Nakashipara", "Ranaghat I", "Ranaghat II", "Santipur", "Tehatta I", "Tehatta II"],
+                "North 24 Parganas": ["Amdanga", "Baduria", "Bagda", "Barasat I", "Barasat II", "Barrackpore I", "Barrackpore II", "Basirhat I", "Basirhat II", "Bongaon", "Deganga", "Gaighata", "Habra I", "Habra II", "Haroa", "Hasnabad", "Hingalganj", "Minakhan", "Rajarhat", "Sandeshkhali I", "Sandeshkhali II", "Swarupnagar"],
+                "Paschim Bardhaman": ["Asansol Municipal Corporation", "Durgapur Municipal Corporation", "Andal", "Barabani", "Durgapur Faridpur", "Jamuria", "Kanksa", "Pandabeswar", "Raniganj", "Salampur"],
+                "Paschim Medinipur": ["Binpur I", "Binpur II", "Chandrakona I", "Chandrakona II", "Dantan I", "Dantan II", "Daspur I", "Daspur II", "Debra", "Garbeta I", "Garbeta II", "Garbeta III", "Ghatal", "Gopiballavpur I", "Gopiballavpur II", "Jamboni", "Jhargram", "Keshpur", "Keshiary", "Kharagpur I", "Kharagpur II", "Midnapore Sadar", "Mohanpur", "Narayangarh", "Nayagram", "Pingla", "Sabang", "Salboni", "Sankrail"],
+                "Purba Bardhaman": ["Ausgram I", "Ausgram II", "Bhatar", "Burdwan I", "Burdwan II", "Galsi I", "Galsi II", "Jamalpur", "Kalna I", "Kalna II", "Katwa I", "Katwa II", "Khandaghosh", "Ketugram I", "Ketugram II", "Manteswar", "Memari I", "Memari II", "Mongolkote", "Purbasthali I", "Purbasthali II", "Raina I", "Raina II"],
+                "Purba Medinipur": ["Bhagawanpur I", "Bhagawanpur II", "Chandipur", "Contai I", "Contai III", "Egra I", "Egra II", "Haldia", "Khejuri I", "Khejuri II", "Mahishadal", "Moyna", "Nandakumar", "Nandigram I", "Nandigram II", "Panskura", "Patashpur I", "Patashpur II", "Ramnagar I", "Ramnagar II", "Sahid Matangini", "Sutahata", "Tamluk"],
+                "Purulia": ["Arsha", "Bagmundi", "Balarampur", "Barabazar", "Bundwan", "Hura", "Jhalda I", "Jhalda II", "Joypur", "Kashipur", "Manbazar I", "Manbazar II", "Neturia", "Para", "Puncha", "Purulia I", "Purulia II", "Raghunathpur I", "Raghunathpur II", "Santuri"],
+                "South 24 Parganas": ["Baruipur", "Basanti", "Bhangar I", "Bhangar II", "Bishnupur I", "Bishnupur II", "Budge Budge I", "Budge Budge II", "Canning I", "Canning II", "Diamond Harbour I", "Diamond Harbour II", "Falta", "Gosaba", "Jaynagar I", "Jaynagar II", "Kakdwip", "Kultali", "Magrahat I", "Magrahat II", "Mandirbazar", "Mathurapur I", "Mathurapur II", "Namkhana", "Patharpratima", "Sagar", "Sonarpur", "Thakurpukur Maheshtala"],
+                "Uttar Dinajpur": ["Chopra", "Goalpokhar I", "Goalpokhar II", "Hemtabad", "Islampur", "Itahar", "Kaliaganj", "Karandighi", "Raiganj"]
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const stateSelect = document.getElementById('state');
+            const districtSelect = document.getElementById('district');
+            const blockSelect = document.getElementById('block');
+
+            stateSelect.addEventListener('change', function() {
+                const selectedState = this.value;
+                districtSelect.innerHTML = '<option value="">Select District</option>';
+                blockSelect.innerHTML = '<option value="">Select District First</option>';
+                districtSelect.disabled = true;
+                blockSelect.disabled = true;
+
+                if (selectedState && locationData[selectedState]) {
+                    const districts = Object.keys(locationData[selectedState]).sort();
+                    districts.forEach(district => {
+                        const option = document.createElement('option');
+                        option.value = district;
+                        option.textContent = district;
+                        districtSelect.appendChild(option);
+                    });
+                    districtSelect.disabled = false;
+                }
+            });
+
+            districtSelect.addEventListener('change', function() {
+                const selectedState = stateSelect.value;
+                const selectedDistrict = this.value;
+                blockSelect.innerHTML = '<option value="">Select Block</option>';
+                blockSelect.disabled = true;
+
+                if (selectedState && selectedDistrict && locationData[selectedState][selectedDistrict]) {
+                    const blocks = locationData[selectedState][selectedDistrict].sort();
+                    blocks.forEach(block => {
+                        const option = document.createElement('option');
+                        option.value = block;
+                        option.textContent = block;
+                        blockSelect.appendChild(option);
+                    });
+                    blockSelect.disabled = false;
+                }
+            });
+        });
+    </script>
+</body>
+</html>

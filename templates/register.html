@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Your Account</title>
+    
+    <style>
+        /* --- Universal Styles & Font Import --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* --- Body Styling with Gradient Background --- */
+        body {
+            font-family: 'Poppins', sans-serif;
+            /* A beautiful, vibrant gradient */
+            background: linear-gradient(135deg, #ed575e 0%, #24419b 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #ffffff;
+        }
+
+        /* --- Glassmorphism Form Container --- */
+        .form-container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2.5rem 3rem;
+            border-radius: 15px;
+            /* Frosted glass effect */
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px); /* For Safari */
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 420px;
+        }
+
+        /* --- Form Heading --- */
+        h2 {
+            text-align: center;
+            font-weight: 600;
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        /* --- Input Grouping --- */
+        .input-group {
+            position: relative;
+            margin-bottom: 1.75rem;
+        }
+
+        /* --- Input Fields Styling --- */
+        .input-field {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 1rem;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .input-field::placeholder {
+            color: rgb(255, 255, 255);
+        }
+
+        .input-field:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.25);
+            border-color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* --- Label Styling --- */
+        label {
+            display: block;
+            margin-bottom: 1rem;
+            font-weight: 300;
+            color: rgb(255, 247, 6);
+            
+        }
+
+        /* --- Submit Button --- */
+        .submit-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%);
+            border: none;
+            border-radius: 8px;
+            color: #1a2980;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* --- Hover & Active Effects for Button --- */
+        .submit-btn:hover {
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .submit-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        }
+        .register-link {
+            text-align: center;
+            color: #ffffff;
+            font-size: 1rem;
+        }
+        footer{
+             margin-top: 30px; /* Adjust this value as needed */
+             text-align: center;
+            }
+
+    </style>
+</head>
+<body>
+
+    <div class="form-container">
+        <form method="post">
+            <h2>Create Account</h2>
+
+            <div class="input-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" class="input-field" placeholder="Choose a unique username" required>
+            </div>
+
+            <div class="input-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" class="input-field" placeholder="Enter your email address" required>
+            </div>
+
+            <div class="input-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" class="input-field" placeholder="Create a strong password" required>
+            </div>
+
+            <input type="submit" value="Register" class="submit-btn">
+        </form>
+        <br>
+        <p class="register-link">
+                Already have an account? <a href="/login">login</a>   here
+    </div>
+    
+
+</body>
+
+</html>

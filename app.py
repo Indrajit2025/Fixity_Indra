@@ -275,13 +275,14 @@ def update_status(issue_id):
     return redirect(url_for('gov_office'))
 
 # === END OF ROUTES ===
+with app.app_context():
+        db.create_all()
 
 if __name__ == "__main__":
     if not os.path.exists(UPLOAD_FOLDER):
         os.makedirs(UPLOAD_FOLDER)
         
     # This command will create the tables if they don't exist
-    with app.app_context():
-        db.create_all()
+    
         
     app.run(debug=True,port=7000)

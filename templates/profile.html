@@ -65,13 +65,9 @@
             <p>Your community impact is visible here. Report a new issue or check the status of your past reports below.</p>
             <div class="dashboard-actions">
                 <a href="{{ url_for('report') }}" class="intro-btn"><i class="fas fa-flag"></i> Report a New Issue</a>
-                <a href="#" class="intro-btn alt"><i class="fas fa-users"></i> View Community Feed</a>
+                <a href="/community_feed" class="intro-btn alt"><i class="fas fa-users"></i> View Community Feed</a>
             </div>
         </section>
-
-        <section class="dashboard-stats">
-             </section>
-
 
         <section class="user-issues-section">
             <div class="section-header">
@@ -82,12 +78,12 @@
                 {% if issues %}
                     {% for issue in issues %}
                     <li class="issue-item-clickable"
-                        data-title="{{ issue[2] }}" 
-                        data-description="{{ issue[3] }}" 
-                        data-location="{{ issue[6] }}" 
-                        data-image="{{ url_for('static', filename='uploads/' + issue[7]) if issue[7] else '' }}">
-                        <span class="issue-title"><i class="fas fa-road"></i> {{ issue[2] }}</span>
-                        <span class="issue-status {{ issue[8]|lower|replace(' ', '-') }}">{{ issue[8] }}</span>
+                        data-title="{{ issue.title }}" 
+                        data-description="{{ issue.description }}" 
+                        data-location="{{ issue.location }}" 
+                        data-image="{{ url_for('static', filename='uploads/' + issue.image_path) if issue.image_path else '' }}">
+                        <span class="issue-title"><i class="fas fa-road"></i> {{ issue.title }}</span>
+                        <span class="issue-status {{ issue.status|lower|replace(' ', '-') }}">{{ issue.status }}</span>
                     </li>
                     {% endfor %}
                 {% else %}

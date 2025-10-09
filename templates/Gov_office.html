@@ -40,25 +40,25 @@
                 <div class="issue-header">
                     <div>
                         <h3 class="issue-item-clickable"
-                            data-title="{{ issue[2] }}" 
-                            data-description="{{ issue[3] }}" 
-                            data-location="{{ issue[6] }}" 
-                            data-image="{{ url_for('static', filename='uploads/' + issue[7]) if issue[7] else '' }}">
-                            {{ issue[2] }}
+                            data-title="{{ issue.title }}" 
+                            data-description="{{ issue.description }}" 
+                            data-location="{{ issue.location }}" 
+                            data-image="{{ url_for('static', filename='uploads/' + issue.image_path) if issue.image_path else '' }}">
+                            {{ issue.title }}
                         </h3>
-                        <small>Reported by: {{ issue[10] }} | Category: {{ issue[4] }}</small>
+                        <small>Reported by: {{ issue.author.username }} | Category: {{ issue.category }}</small>
                     </div>
-                    <span class="issue-status {{ issue[8]|lower|replace(' ', '-') }}">{{ issue[8] }}</span>
+                    <span class="issue-status {{ issue.status|lower|replace(' ', '-') }}">{{ issue.status }}</span>
                 </div>
                 <div class="issue-body">
-                    <p>{{ issue[3][:100] }}...</p> </div>
-                {% if issue[8] != 'Completed' %}
+                    <p>{{ issue.description[:100] }}...</p> </div>
+                {% if issue.status != 'Completed' %}
                 <div class="issue-actions">
-                    <form action="{{ url_for('update_status', issue_id=issue[0]) }}" method="post" style="display:inline;">
+                    <form action="{{ url_for('update_status', issue_id=issue.id) }}" method="post" style="display:inline;">
                         <input type="hidden" name="status" value="In Progress">
-                        <button type="submit" class="action-btn btn-accept" {% if issue[8] == 'In Progress' %}disabled{% endif %}>Accept</button>
+                        <button type="submit" class="action-btn btn-accept" {% if issue.status == 'In Progress' %}disabled{% endif %}>Accept</button>
                     </form>
-                    <form action="{{ url_for('update_status', issue_id=issue[0]) }}" method="post" style="display:inline;">
+                    <form action="{{ url_for('update_status', issue_id=issue.id) }}" method="post" style="display:inline;">
                         <input type="hidden" name="status" value="Completed">
                         <button type="submit" class="action-btn btn-complete">Complete</button>
                     </form>

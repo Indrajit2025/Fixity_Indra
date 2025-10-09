@@ -31,7 +31,7 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
-    password_hash = db.Column(db.String(128))
+    password_hash = db.Column(db.String(256))
     issues = db.relationship('Issue', backref='author', lazy=True)
 
     def __repr__(self):
@@ -61,7 +61,7 @@ class Authority(db.Model):
     state = db.Column(db.String(100))
     district = db.Column(db.String(100))
     block = db.Column(db.String(100))
-    password_hash = db.Column(db.String(128))
+    password_hash = db.Column(db.String(256))
 
     def __repr__(self):
         return f'<Authority {self.username}>'
